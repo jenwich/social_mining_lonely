@@ -5,6 +5,9 @@ import time
 from datetime import datetime
 from secret import *
 
+TIME_WAIT_REQUEST = 60
+TIME_WAIT_ERROR = 60
+
 if len(sys.argv) < 3:
     print("Input USER_FROM and USER_TO")
     exit()
@@ -41,7 +44,7 @@ for index, u in enumerate(users):
             friends = get_user_following(u['_id'])
         except tweepy.error.RateLimitError:
             print(now_str, "Rate Limit Error")
-            time.sleep(180)
+            time.sleep(TIME_WAIT_ERROR)
         except tweepy.TweepError as e:
             print(now_str, "Tweepy Error")
             print(e)
@@ -49,7 +52,7 @@ for index, u in enumerate(users):
                 skip = 1
                 print("Skipped.")
                 break
-            time.sleep(180)
+            time.sleep(TIME_WAIT_ERROR)
         else:
             break
     if skip == 1:
@@ -58,4 +61,4 @@ for index, u in enumerate(users):
     u_['friends'] = friends
     db.user.update({'_id': u['_id']}, u_, upsert=True)
     print(now_str, "User#%d (%s): %d friends have added to database" % (USER_FROM+index, u['screen_name'], len(friends)))
-    time.sleep(60)
+    time.sleep(TIME_WAIT_REQUEST)
