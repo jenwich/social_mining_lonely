@@ -50,7 +50,8 @@ while (True):
         print("Rate limit exceed.")
         time.sleep(60)
     except tweepy.TweepError:
-        raise
+        print("Some errors on Tweepy.")
+        time.sleep(60)
     else:
         try:
             tweet_ids = db.tweet.insert_many(data).inserted_ids
