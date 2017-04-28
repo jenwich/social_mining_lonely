@@ -1,9 +1,13 @@
-## Install package
+## Setup
 
-`pip install -r requirements.txt`
+* Install packages
 
-## Copy `secret.py`
+  `pip install -r requirements.txt`
+
+* Copy `secret.py` and change keys
 
 ## Run
 
- * run `python get_following.py <FROM> <TO>` ex `python get_following.py 1 100`
+ * Collect user following
+ 
+ `python get_following.py <FROM> <TO>`
