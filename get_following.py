@@ -34,18 +34,28 @@ def get_user_following(_id):
 
 for index, u in enumerate(users):
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("["+now+"]", end=" ")
+    now_str = "["+now+"]"
+    skip = 0
     while (True):
         try:
             friends = get_user_following(u['_id'])
         except tweepy.error.RateLimitError:
-            print("Rate Limit Error")
+            print(now_str, "Rate Limit Error")
             time.sleep(180)
-        except tweepy.TweepError:
-            print("Tweepy Error")
+        except tweepy.TweepError as e:
+            print(now_str, "Tweepy Error")
+            print(e)
+            if str(e) == "Not authorized.":
+                skip = 1
+                print("Skipped.")
+                break
             time.sleep(180)
         else:
             break
-    db.user.update({'_id': u['_id']}, {'friends': friends}, upsert=True)
-    print("User#%d (%s): %d friends have added to database" % (USER_FROM+index, u['screen_name'], len(friends)))
+    if skip == 1:
+        continue
+    u_ = u.copy()
+    u_['friends'] = friends
+    db.user.update({'_id': u['_id']}, u_, upsert=True)
+    print(now_str, "User#%d (%s): %d friends have added to database" % (USER_FROM+index, u['screen_name'], len(friends)))
     time.sleep(60)
