@@ -22,7 +22,9 @@ client = pymongo.MongoClient('mongodb://%s:%d/' % (MONGODB_HOST, MONGODB_PORT))
 db = client[MONGODB_DATABASE]
 db.authenticate(MONGODB_USERNAME, MONGODB_PASSWORD)
 
-users = db.user.find().sort('_id', pymongo.ASCENDING).skip(USER_FROM-1).limit(USER_TO-USER_FROM+1)
+users_ = db.user.find({}, no_cursor_timeout=True).sort('_id', pymongo.ASCENDING).skip(USER_FROM-1).limit(USER_TO-USER_FROM+1)
+users = list(users_)
+users_.close()
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
