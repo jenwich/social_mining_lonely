@@ -37,18 +37,20 @@ def get_user_following(_id):
     friends = tweepy.Cursor(api.friends_ids, user_id=_id, stringify_ids=True).items(5000)
     return list(friends)
 
+def now():
+    now_ = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return "["+ now_ +"]"
+
 for index, u in enumerate(users):
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    now_str = "["+now+"]"
     skip = 0
     while (True):
         try:
             friends = get_user_following(u['_id'])
         except tweepy.error.RateLimitError:
-            print(now_str, "Rate Limit Error")
+            print(now(), "Rate Limit Error")
             time.sleep(TIME_WAIT_ERROR)
         except tweepy.TweepError as e:
-            print(now_str, "Tweepy Error")
+            print(now(), "Tweepy Error")
             print(e)
             if str(e) == "Not authorized.":
                 skip = 1
@@ -62,5 +64,5 @@ for index, u in enumerate(users):
     u_ = u.copy()
     u_['friends'] = friends
     db.user.update({'_id': u['_id']}, u_, upsert=True)
-    print(now_str, "User#%d (%s): %d friends have added to database" % (USER_FROM+index, u['screen_name'], len(friends)))
+    print(now(), "User#%d (%s): %d friends have added to database" % (USER_FROM+index, u['screen_name'], len(friends)))
     time.sleep(TIME_WAIT_REQUEST)
