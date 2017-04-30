@@ -17,7 +17,9 @@ client = pymongo.MongoClient('mongodb://%s:%d/' % (MONGODB_HOST, MONGODB_PORT))
 db = client[MONGODB_DATABASE]
 db.authenticate(MONGODB_USERNAME, MONGODB_PASSWORD)
 
-users_ = db.user.find({'friends': {'$exists': True}, 'screen_name': {'$exists': True}}, no_cursor_timeout=True).sort('_id', pymongo.ASCENDING).limit(1000)
+users_ = db.user.find({'friends': {'$exists': True}, 'screen_name': {'$exists': True}}, no_cursor_timeout=True).sort('_id', pymongo.ASCENDING)
+print("Total: ", users_.count(), "users")
+print("Loading data...")
 users = list(users_)
 users_.close()
 
