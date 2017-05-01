@@ -13,12 +13,14 @@ else:
         print("TO must greater than FROM")
         exit()
 
+SIZE_LIMIT = 10000
+
 client = pymongo.MongoClient('mongodb://%s:%d/' % (MONGODB_HOST, MONGODB_PORT))
 db = client[MONGODB_DATABASE]
 db.authenticate(MONGODB_USERNAME, MONGODB_PASSWORD)
 
-users_ = db.user.find({'friends': {'$exists': True}, 'screen_name': {'$exists': True}}, no_cursor_timeout=True).sort('_id', pymongo.ASCENDING)
-print("Total: ", users_.count(), "users")
+users_ = db.user.find({'friends': {'$exists': True}, 'screen_name': {'$exists': True}}, no_cursor_timeout=True).limit(SIZE_LIMIT).sort('_id', pymongo.ASCENDING)
+print("Total:", users_.count(), "users, Size limit:", SIZE_LIMIT)
 print("Loading data...")
 users = list(users_)
 users_.close()
