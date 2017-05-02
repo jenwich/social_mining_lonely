@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Find Friends</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- Navber -->
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+      <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#" style="margin-left:10px">Find Friends on Twitter</a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="./top100.html">Top 100</a>
+        </div>
+      </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="display-3">Find Friend on Twitter</h1>
+        <p class="lead">ถ้าคุณเหงา ให้เราช่วยหาเพื่อนให้สิ :)</p>
+        <hr class="my-4">
+        <p>โปรดใส่ username twitter</p>
+        <div class="lead">
+          <form class="form-inline" action="" method="POST" id="form-name">
+            <label class="sr-only" for="inlineFormInput">Name</label>
+            <label class="sr-only" for="inlineFormInputGroup">Username</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+              <div class="input-group-addon">@</div>
+              <input type="text" class="form-control form-control-lg" id="ttname" placeholder="Username">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+          </form>
+
+          <div id="user-profile"></div>
+
+          <div id="header-search"></div>
+          <div id="suggestfriend-list"></div>
+
+        </div>
+      </div>
+    </div>
+    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="./js/findfriend_twitter.js" ></script>
+  </body>
+</html>

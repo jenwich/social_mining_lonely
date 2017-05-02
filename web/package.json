@@ -1,0 +1,25 @@
+{
+  "name": "social_mining_lonely_web",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jenwich/social_mining_lonely.git"
+  },
+  "author": "Jenwich Rattanayenjai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jenwich/social_mining_lonely/issues"
+  },
+  "homepage": "https://github.com/jenwich/social_mining_lonely#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.26"
+  }
+}
