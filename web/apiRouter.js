@@ -1,5 +1,5 @@
 var router = require('express').Router()
-var api = require('./fakeapi')
+var api = require('./api')
 
 router.get('/ranking', (req, res) => {
   api.getRank(data => {
