@@ -2,7 +2,7 @@ $(document).ready(function () {
 	submit_form();
 });
 
-var API_ROOT = "http://localhost:8011/api"
+var API_ROOT = "/api"
 
 function submit_form() {
 	$("#form-name").submit(function(e) {
@@ -13,7 +13,7 @@ function submit_form() {
 			url: `${API_ROOT}/user?screen_name=${screen_name}`,
 			success: function(result) {
 				$("#header-search").html('<div><hr class="my-4"><h3 style="margin-bottom: 20px">Suggested For You</h3></div>');
-				$("#user-profile").html(user_profile(screen_name, result['tweets']));
+				$("#user-profile").html(user_profile(screen_name, result['name'], result['tweets']));
 				$("#suggestfriend-list").empty();
 				var suggest_list = "";
 
@@ -30,7 +30,7 @@ function submit_form() {
 	});
 }
 
-function user_profile(screen_name, tweets) {
+function user_profile(screen_name, name, tweets) {
 	var template = `
           <div class="card">
             <div class="card-block">
@@ -40,7 +40,7 @@ function user_profile(screen_name, tweets) {
                     <img class="card-img img-fluid" src="https://twitter.com/${screen_name}/profile_image?size=original" alt="Card image" height="80" />
                   </div>
                   <div class="col col-sm-8 col-lg-8">
-                  	<a href="https://twitter.com/${screen_name}"><h3 class="card-title">{SCREEN_NAME}</h3></a>
+                  	<a href="https://twitter.com/${screen_name}"><h3 class="card-title">${name}</h3></a>
                     <h4 class="card-subtitle">@${screen_name}</h4>
                     <br />`; 
       			for(var i = 0; i < tweets.length; i++) {

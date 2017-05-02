@@ -45,12 +45,13 @@ module.exports = {
       } else {
         coeffs = docs[0].friend_coeff
         var id = docs[0]._id,
-            user_id = docs[0].user_id
+            user_id = docs[0].user_id,
+            name = users[id].name
         var users_ = users.map((u, i) => {
           u.score = coeffs[i] + u.count
           return u
         })
-        users_ = users_.filter((u, i) => i != id)
+        users_ = users_.filter((u, i) => u.user_id != user_id)
         users_ = users_.sort((a, b) => b.score-a.score).slice(0, 20)
 
         db.collection('tweet').find({'user._id': user_id}).toArray((err, docs) => {
@@ -59,6 +60,7 @@ module.exports = {
             created_at: moment(t.created_at).format('ddd, DD MMM YYYY HH:mm:ss')
           }))
           callback({
+            name,
             suggests: users_,
             tweets
           })

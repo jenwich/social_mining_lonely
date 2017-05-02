@@ -1,4 +1,4 @@
-var API_ROOT = "http://localhost:8011/api"
+var API_ROOT = "/api"
 
 $(document).ready(function () {
   $.ajax({
