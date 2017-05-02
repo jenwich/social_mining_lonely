@@ -6,7 +6,7 @@ var moment = require('moment')
 
 var url = `mongodb://${secret.MONGODB_USERNAME}:${secret.MONGODB_PASSWORD}@${secret.MONGODB_HOST}:${secret.MONGODB_PORT}/${secret.MONGODB_DATABASE}`
 
-const TOP = 20
+const TOP = 100
 
 var db, users
 
