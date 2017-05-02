@@ -7,6 +7,7 @@ var moment = require('moment')
 var url = `mongodb://${secret.MONGODB_USERNAME}:${secret.MONGODB_PASSWORD}@${secret.MONGODB_HOST}:${secret.MONGODB_PORT}/${secret.MONGODB_DATABASE}`
 
 const TOP = 100
+const SUGGEST_AMOUNT = 20
 
 var db, users
 
@@ -37,32 +38,44 @@ function init() {
 
 init()
 
+function calculateScore(friend_coeff, tweet_count) {
+  return 120*friend_coeff + 1.2*Math.log(tweet_count)
+}
+
 module.exports = {
   getUser: function(screen_name, callback) {
     db.collection('friend_coeff').find({screen_name}).toArray((err, docs) => {
       if (docs.length == 0) {
         callback({error: 'not_found'})
       } else {
+        console.log(screen_name, "found user")
         coeffs = docs[0].friend_coeff
         var id = docs[0]._id,
             user_id = docs[0].user_id,
             name = users[id].name
-        var users_ = users.map((u, i) => {
-          u.score = coeffs[i] + u.count
-          return u
-        })
-        users_ = users_.filter((u, i) => u.user_id != user_id)
-        users_ = users_.sort((a, b) => b.score-a.score).slice(0, 20)
+        var users_ = users.map((u, i) => Object.assign({}, u, {
+          score: calculateScore(coeffs[i], u.count),
+          friend_coeff: coeffs[i]
+        }))
+        users_ = users_.filter(u => u.user_id != user_id)
 
-        db.collection('tweet').find({'user._id': user_id}).toArray((err, docs) => {
-          var tweets = docs.map(t => Object.assign({
-            text: t.text,
-            created_at: moment(t.created_at).format('ddd, DD MMM YYYY HH:mm:ss')
-          }))
-          callback({
-            name,
-            suggests: users_,
-            tweets
+        db.collection('user').find({_id: user_id}).toArray((err, docs) => {
+          var friends = docs[0].friends
+          users_ = users_.filter(u => !friends.includes(u.user_id) && u.user_id != user_id)
+            .sort((a, b) => b.score-a.score)
+            .slice(0, SUGGEST_AMOUNT)
+
+          db.collection('tweet').find({'user._id': user_id}).toArray((err, docs) => {
+            var tweets = docs.map(t => Object.assign({
+              text: t.text,
+              created_at: moment(t.created_at).format('ddd, DD MMM YYYY HH:mm:ss')
+            }))
+            //console.log(users_)
+            callback({
+              name,
+              suggests: users_,
+              tweets
+            })
           })
         })
       }
