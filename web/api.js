@@ -82,7 +82,7 @@ module.exports = {
     })
   },
   getRank: function(callback) {
-    var data = users.sort((a, b) => b.count-a.count)
+    var data = users.slice().sort((a, b) => b.count-a.count)
     callback(data.slice(0, TOP))
   }
 }
